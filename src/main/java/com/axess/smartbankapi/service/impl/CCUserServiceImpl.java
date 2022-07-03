@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.axess.smartbankapi.controller.RewardsCatalogueController;
 import com.axess.smartbankapi.exception.RecordExistException;
 import com.axess.smartbankapi.exception.RecordNotCreatedException;
 import com.axess.smartbankapi.exception.RecordNotDeletedException;
@@ -17,7 +18,10 @@ import com.axess.smartbankapi.model.CCUser;
 import com.axess.smartbankapi.repository.CCUserRepository;
 import com.axess.smartbankapi.service.CCUserService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CCUserServiceImpl implements CCUserService {
 
 	@Autowired
@@ -70,6 +74,7 @@ public class CCUserServiceImpl implements CCUserService {
 			Optional<CCUser> ccUser = this.ccUserRepo.findByUserIdAndPassword(userId, password);
 			return ccUser.get();
 		} catch (NoSuchElementException e) {
+			log.warn("Invalid Credentials. User id is used to make login attempt: "+userId);
 			throw new RecordNotFoundException("Invalid Credentials. Please check again.");
 		}
 	}

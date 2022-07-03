@@ -1,6 +1,7 @@
 package com.axess.smartbankapi.sqs;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import io.awspring.cloud.messaging.listener.SqsMessageDeletionPolicy;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
+@Profile("SQS")
 public class Consumer {
 
     @Value("${cloud.aws.end-point.uri}")

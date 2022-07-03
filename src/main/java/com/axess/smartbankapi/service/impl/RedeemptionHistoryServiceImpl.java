@@ -16,7 +16,10 @@ import com.axess.smartbankapi.repository.CCUserRepository;
 import com.axess.smartbankapi.repository.RedeemptionHistoryRepository;
 import com.axess.smartbankapi.service.RedeemptionHistoryService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class RedeemptionHistoryServiceImpl implements RedeemptionHistoryService {
 
 	@Autowired
@@ -29,6 +32,7 @@ public class RedeemptionHistoryServiceImpl implements RedeemptionHistoryService 
 	@Override
 	public String saveHistory(UserRedeemptionHistoryDto historyDto) throws RecordExistException, RecordNotCreatedException {
 		String message ="Item saved in history";
+		log.info(message);
 		CCUser user = ccUserRepo.findById(historyDto.getCcNumber()).get();
 		user.setAvailableRedeemPoints(user.getAvailableRedeemPoints() - historyDto.getTotalPointsRedeemed());
 		user.setTotalRewardsGained(historyDto.getTotalAmountGained());

@@ -16,9 +16,12 @@ import com.axess.smartbankapi.exception.RecordNotFoundException;
 import com.axess.smartbankapi.model.RewardsCatalogue;
 import com.axess.smartbankapi.service.RewardCatalogueService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/catalogue")
 @CrossOrigin
+@Slf4j
 public class RewardsCatalogueController {
 	
 	@Autowired
@@ -27,6 +30,7 @@ public class RewardsCatalogueController {
 	@GetMapping("/")
 	public ResponseEntity<?> getAll() throws RecordNotFoundException {
 		
+		log.info("Request for catalogue received");
 		ApiSuccessResponse response = new ApiSuccessResponse();
 
 		List<RewardsCatalogue> rc = this.rcService.getAll();
@@ -47,6 +51,7 @@ public class RewardsCatalogueController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getById(@PathVariable long id) throws RecordNotFoundException {
 		
+		log.info("Request for catalogue having id received: "+id);
 		ApiSuccessResponse response = new ApiSuccessResponse();
 
 		RewardsCatalogue rc = this.rcService.getById(id);

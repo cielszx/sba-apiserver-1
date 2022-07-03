@@ -16,9 +16,12 @@ import com.axess.smartbankapi.exception.RecordNotCreatedException;
 import com.axess.smartbankapi.exception.RecordNotFoundException;
 import com.axess.smartbankapi.service.RedeemptionHistoryService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/history")
+@Slf4j
 public class RedeemptionHistoryController {
 
 	
@@ -29,6 +32,7 @@ public class RedeemptionHistoryController {
 	@PostMapping("/")
 	public ResponseEntity<?> saveHistory(@RequestBody UserRedeemptionHistoryDto historyDto) throws RecordNotFoundException, RecordExistException, RecordNotCreatedException {
 		
+		log.info("Request for redeemption history received");
 		ApiSuccessResponse response = new ApiSuccessResponse();
 
 		response.setMessage("Successfully added to history. ");

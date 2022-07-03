@@ -5,7 +5,7 @@ COPY target/*.jar app.jar
 ENTRYPOINT ["java"]
 CMD ["-jar","/app.jar"]
 
-
+# docker build -f Dockerfile -t <your docker hub id>/sba-apiserver:1.0.0
 # To run postgres container
 # docker run -d -p 5432:5432 --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=smartbankapp postgres
 
