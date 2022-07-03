@@ -29,8 +29,8 @@ public class CCUserController {
 
 	@Autowired
 	private CCUserService ccUserService;
-	@Autowired
-	private SQSService sqsService;
+	// @Autowired
+	// private SQSService sqsService;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> verifyLogin(@RequestBody LoginDto loginDto) throws RecordNotFoundException {
@@ -41,7 +41,7 @@ public class CCUserController {
 
 		response.setMessage("Login Verified successfully. ");
 		log.info("New user logged in.  Total logged in users: " + ccUserService.getAllUsers().size());
-		sqsService.sendMessage("New user logged in.  Total logged in user: " + ccUserService.getAllUsers().size());
+		// sqsService.sendMessage("New user logged in.  Total logged in user: " + ccUserService.getAllUsers().size());
 		response.setHttpStatus(String.valueOf(HttpStatus.FOUND));
 		response.setHttpStatusCode(200);
 		response.setBody(loggedInUser);

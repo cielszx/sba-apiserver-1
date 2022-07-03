@@ -2,6 +2,7 @@ package com.axess.smartbankapi.sqs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Profile("SQS")
 public class SQSService {
 
     @Autowired
