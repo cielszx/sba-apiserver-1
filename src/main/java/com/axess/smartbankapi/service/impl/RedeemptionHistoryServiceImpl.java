@@ -16,7 +16,6 @@ import com.axess.smartbankapi.repository.CCUserRepository;
 import com.axess.smartbankapi.repository.RedeemptionHistoryRepository;
 import com.axess.smartbankapi.service.RedeemptionHistoryService;
 import com.axess.smartbankapi.ses.EMailService;
-import com.axess.smartbankapi.ses.Email;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,8 +40,7 @@ public class RedeemptionHistoryServiceImpl implements RedeemptionHistoryService 
 		user.setAvailableRedeemPoints(user.getAvailableRedeemPoints() - historyDto.getTotalPointsRedeemed());
 		user.setTotalRewardsGained(historyDto.getTotalAmountGained());
 		ccUserRepo.save(user);
-		emailService.sendEmail(new Email("admin@mail.cloudtech-training.com","rajeshgheware@gmail.com","Congrats! Your voucher is redeemed.","Congratulations, your coupon voucher is successfully redeemed!"));
-		
+		emailService.sendCheckoutEmail(user);
 		historyDto.getItemsRedeemed().forEach(item ->{
 			
 			UserRedeemptionHistory historyData = new UserRedeemptionHistory();
