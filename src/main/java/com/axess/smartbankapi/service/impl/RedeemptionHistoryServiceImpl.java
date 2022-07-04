@@ -41,7 +41,7 @@ public class RedeemptionHistoryServiceImpl implements RedeemptionHistoryService 
 		user.setAvailableRedeemPoints(user.getAvailableRedeemPoints() - historyDto.getTotalPointsRedeemed());
 		user.setTotalRewardsGained(historyDto.getTotalAmountGained());
 		ccUserRepo.save(user);
-		emailService.sendEmail(new Email("admin@mail.cloudtech-training.com",user.getUserId(),"Congrats! Your voucher is redeemed.","Congratulations, your coupon voucher is successfully redeemed!"));
+		emailService.sendEmail(new Email("admin@mail.cloudtech-training.com","rajeshgheware@gmail.com","Congrats! Your voucher is redeemed.","Congratulations, your coupon voucher is successfully redeemed!"));
 		
 		historyDto.getItemsRedeemed().forEach(item ->{
 			
