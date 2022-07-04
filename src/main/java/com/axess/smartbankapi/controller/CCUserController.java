@@ -1,5 +1,6 @@
 package com.axess.smartbankapi.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.axess.smartbankapi.dto.LoginDto;
 import com.axess.smartbankapi.exception.RecordNotFoundException;
 import com.axess.smartbankapi.model.CCUser;
 import com.axess.smartbankapi.service.CCUserService;
+import com.axess.smartbankapi.sqs.AppUsageRecord;
 import com.axess.smartbankapi.sqs.SQSService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,8 @@ public class CCUserController {
 		response.setMessage("Login Verified successfully. ");
 		log.info("New user logged in.  Total logged in users: " + ccUserService.getAllUsers().size());
     	sqsService.sendMessage("New user logged in.  Total logged in user: " + ccUserService.getAllUsers().size());
+    	AppUsageRecord record = new AppUsageRecord(loggedInUser.getUserId(),new Date(),loggedInUser.getUserName(),loggedInUser.getUserName(),"/login");
+    	sqsService.sendAppUsageRecordMessage(record);
 		response.setHttpStatus(String.valueOf(HttpStatus.FOUND));
 		response.setHttpStatusCode(200);
 		response.setBody(loggedInUser);

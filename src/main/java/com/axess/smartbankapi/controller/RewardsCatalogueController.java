@@ -1,5 +1,6 @@
 package com.axess.smartbankapi.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import com.axess.smartbankapi.config.restapi.ApiSuccessResponse;
 import com.axess.smartbankapi.exception.RecordNotFoundException;
 import com.axess.smartbankapi.model.RewardsCatalogue;
 import com.axess.smartbankapi.service.RewardCatalogueService;
+import com.axess.smartbankapi.sqs.AppUsageRecord;
+import com.axess.smartbankapi.sqs.SQSService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +29,8 @@ public class RewardsCatalogueController {
 	
 	@Autowired
 	private RewardCatalogueService rcService;
+	@Autowired
+	private SQSService sqsService;
 	
 	@GetMapping("/")
 	public ResponseEntity<?> getAll() throws RecordNotFoundException {
@@ -41,6 +46,9 @@ public class RewardsCatalogueController {
 		response.setBody(rc);
 		response.setError(false);
 		response.setSuccess(true);
+		AppUsageRecord record = new AppUsageRecord("user@email", new Date(), "FirstName",
+				"LastName", "/catalogue");
+		sqsService.sendAppUsageRecordMessage(record);
 
 		return ResponseEntity.status(HttpStatus.OK).header("status", String.valueOf(HttpStatus.OK))
 				.body(response);

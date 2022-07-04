@@ -1,5 +1,7 @@
 package com.axess.smartbankapi.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import com.axess.smartbankapi.exception.RecordExistException;
 import com.axess.smartbankapi.exception.RecordNotCreatedException;
 import com.axess.smartbankapi.exception.RecordNotFoundException;
 import com.axess.smartbankapi.service.RedeemptionHistoryService;
+import com.axess.smartbankapi.sqs.AppUsageRecord;
+import com.axess.smartbankapi.sqs.SQSService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +31,8 @@ public class RedeemptionHistoryController {
 	
 	@Autowired
 	private RedeemptionHistoryService historyService;
-	
+	@Autowired
+	private SQSService sqsService;
 	
 	@PostMapping("/")
 	public ResponseEntity<?> saveHistory(@RequestBody UserRedeemptionHistoryDto historyDto) throws RecordNotFoundException, RecordExistException, RecordNotCreatedException {
@@ -41,6 +46,9 @@ public class RedeemptionHistoryController {
 		response.setBody(historyService.saveHistory(historyDto));
 		response.setError(false);
 		response.setSuccess(true);
+		AppUsageRecord record = new AppUsageRecord("user@email", new Date(), "firstName",
+				"lastName", "/history");
+		sqsService.sendAppUsageRecordMessage(record);
 
 		return ResponseEntity.status(HttpStatus.OK).header("status", String.valueOf(HttpStatus.OK))
 				.body(response);
