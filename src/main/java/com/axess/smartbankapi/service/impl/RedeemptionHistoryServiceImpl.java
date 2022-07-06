@@ -15,6 +15,7 @@ import com.axess.smartbankapi.model.UserRedeemptionHistory;
 import com.axess.smartbankapi.repository.CCUserRepository;
 import com.axess.smartbankapi.repository.RedeemptionHistoryRepository;
 import com.axess.smartbankapi.service.RedeemptionHistoryService;
+import com.axess.smartbankapi.ses.EMailService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +28,8 @@ public class RedeemptionHistoryServiceImpl implements RedeemptionHistoryService 
 	
 	@Autowired
 	private CCUserRepository ccUserRepo;
+	@Autowired
+	EMailService emailService;
 	
 	
 	@Override
@@ -37,6 +40,7 @@ public class RedeemptionHistoryServiceImpl implements RedeemptionHistoryService 
 		user.setAvailableRedeemPoints(user.getAvailableRedeemPoints() - historyDto.getTotalPointsRedeemed());
 		user.setTotalRewardsGained(historyDto.getTotalAmountGained());
 		ccUserRepo.save(user);
+		emailService.sendCheckoutEmail(user);
 		
 		historyDto.getItemsRedeemed().forEach(item ->{
 			
